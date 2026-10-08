@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "publicwww": {
+      "url": "https://api.publicwww.com/mcp",
+      "headers": { "Authorization": "Bearer ${env:PUBLICWWW_TOKEN}" }
+    }
+  }
+}

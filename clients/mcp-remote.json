@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "publicwww": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://api.publicwww.com/mcp",
+               "--header", "Authorization:${AUTH_HEADER}"],
+      "env": { "AUTH_HEADER": "Bearer YOUR_TOKEN" }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "publicwww": {
+      "type": "http",
+      "url": "https://api.publicwww.com/mcp"
+    }
+  }
+}

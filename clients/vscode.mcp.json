@@ -1,0 +1,13 @@
+{
+  "inputs": [
+    { "type": "promptString", "id": "publicwww-token",
+      "description": "PublicWWW token", "password": true }
+  ],
+  "servers": {
+    "publicwww": {
+      "type": "http",
+      "url": "https://api.publicwww.com/mcp",
+      "headers": { "Authorization": "Bearer ${input:publicwww-token}" }
+    }
+  }
+}

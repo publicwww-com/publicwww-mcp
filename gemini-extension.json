@@ -1,0 +1,20 @@
+{
+  "name": "publicwww",
+  "version": "1.0.0",
+  "description": "Search the source code (HTML, JavaScript, CSS) of hundreds of millions of websites with PublicWWW.",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "publicwww": {
+      "httpUrl": "https://api.publicwww.com/mcp",
+      "headers": { "Authorization": "Bearer ${PUBLICWWW_TOKEN}" }
+    }
+  },
+  "settings": [
+    {
+      "name": "PublicWWW token",
+      "description": "A token from https://publicwww.com/profile/api",
+      "envVar": "PUBLICWWW_TOKEN",
+      "sensitive": true
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+# ~/.codex/config.toml - or: codex mcp add publicwww --url https://api.publicwww.com/mcp --bearer-token-env-var PUBLICWWW_TOKEN
+[mcp_servers.publicwww]
+url = "https://api.publicwww.com/mcp"
+bearer_token_env_var = "PUBLICWWW_TOKEN"

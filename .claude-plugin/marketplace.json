@@ -1,0 +1,12 @@
+{
+  "name": "publicwww",
+  "description": "PublicWWW - search the source code of hundreds of millions of websites",
+  "owner": { "name": "PublicWWW", "url": "https://publicwww.com" },
+  "plugins": [
+    {
+      "name": "publicwww",
+      "source": "./",
+      "description": "PublicWWW MCP server (sign in with OAuth) and a skill for writing source-code search queries"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "publicwww",
+  "version": "1.0.0",
+  "description": "Search the source code (HTML, JavaScript, CSS) of hundreds of millions of websites: the PublicWWW MCP server and a skill for writing queries.",
+  "author": { "name": "PublicWWW", "url": "https://publicwww.com" },
+  "homepage": "https://publicwww.com/docs/mcp/",
+  "repository": "https://github.com/publicwww-com/publicwww-mcp",
+  "license": "MIT",
+  "keywords": ["mcp", "search", "source-code", "websites", "publicwww"]
+}
