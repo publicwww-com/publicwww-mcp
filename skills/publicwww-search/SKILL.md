@@ -1,6 +1,6 @@
 ---
 name: publicwww-search
-description: Search the source code (HTML, JavaScript, CSS) of hundreds of millions of websites with PublicWWW - find which sites use a script, library, tracking id, widget, meta tag or any code fragment. Use when the user asks which or how many websites contain some code, or wants a list of such sites.
+description: Search the source code (HTML, JavaScript, CSS) of hundreds of millions of websites with PublicWWW - find which sites use a script, library, tracking id, widget, meta tag or any code fragment, save them as clusters and extract contacts, social profiles or tag ids from their pages. Use when the user asks which or how many websites contain some code, wants a list of such sites, or wants data pulled out of those sites.
 ---
 
 # Searching page source with PublicWWW
@@ -10,7 +10,8 @@ is the fragment of markup, script or stylesheet you expect to find in the page
 source. Results are sites, ranked by popularity.
 
 The search runs through the PublicWWW MCP server (`https://api.publicwww.com/mcp`,
-tools `search` and `account`) or the REST API (`https://api.publicwww.com/v1/search`).
+tools `search`, `account` and seven cluster tools) or the REST API
+(`https://api.publicwww.com/v1/search`, `/v1/clusters`).
 
 ## Writing the query
 
@@ -49,4 +50,39 @@ Tips:
 - Refusals come back as tool errors with a code: `quota_exceeded` (come back after
   midnight UTC), `too_many_requests` (wait `retry_after` seconds), `page_too_deep`.
 
-Documentation: https://publicwww.com/docs/query-syntax/ and https://publicwww.com/docs/mcp/
+## Clusters and extraction
+
+A cluster is a saved list of websites. Use clusters when the user wants something
+from the sites themselves - emails, phones, social profiles, analytics or tag ids -
+or wants to compare two sets of sites.
+
+- `create_cluster` - from a search (`query`, same syntax as `search`; costs one
+  search, a repeat within a day is free) or from a list (`domains`, names or urls;
+  only sites in the index are kept). Optional `name`.
+- `list_clusters`, `get_cluster` (`cluster`, `page`, `rows`) - read only, spend
+  nothing.
+- `combine_clusters` - `operation` `and` (in every cluster), `or` (in any) or
+  `diff` (in the first but not the second, exactly two), `clusters` - the ids.
+- `extract_from_cluster` - `cluster`, `presets` and/or `regex`, `offset`, `limit`,
+  `include_empty`. Prefer presets by name: `email`, `phone`, `whatsapp`,
+  `telegram`, `skype`, `facebook`, `instagram`, `twitter`, `linkedin`, `gtm`,
+  `ga4`, `ua`, `hotjar`, `adsense`, `bitcoin`. Otherwise a PCRE in slashes whose
+  first capture group is the value, e.g. `/data-site-id="([0-9]+)"/i`; up to ten
+  expressions, one column each. It works in parts: call again with `offset` set to
+  `next_offset` until it is null. Each site found costs as many extraction points
+  as values found, 0.1 if none - try a small `limit` first on a big cluster.
+- `rename_cluster` - `cluster`, `name`.
+- `delete_cluster` - deletes for good and cannot be undone. Always ask the user
+  before calling it, naming the cluster.
+- An account keeps up to 100 clusters; past that `create_cluster` and
+  `combine_clusters` answer `cluster_limit` - offer to delete old ones, do not
+  delete on your own. Free accounts: up to 100 domains in a cluster and 100
+  extraction points a day. `extract_quota_exceeded` - the day's points are used
+  up.
+
+Example: "emails of sites that use Hotjar" - `create_cluster` with query
+`"static.hotjar.com"`, then `extract_from_cluster` with presets `["email"]`,
+following `next_offset`.
+
+Documentation: https://publicwww.com/docs/query-syntax/, https://publicwww.com/docs/mcp/
+and https://publicwww.com/docs/clusters/

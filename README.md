@@ -2,15 +2,16 @@
 
 Search the source code (HTML, JavaScript, CSS) of hundreds of millions of websites
 from an AI assistant: which sites load a script, use a library, carry a tracking id
-or a widget. [PublicWWW](https://publicwww.com) runs a remote MCP server:
+or a widget - then save them as a cluster and pull contacts, social profiles or tag
+ids out of their pages. [PublicWWW](https://publicwww.com) runs a remote MCP server:
 
 ```
 https://api.publicwww.com/mcp
 ```
 
-Two read-only tools: `search` (query, rows, page, snippets) and `account` (plan and
-searches left today). Every account can use it, a free one included - see
-[limits](https://publicwww.com/docs/mcp/limits/).
+Nine tools: `search` (query, rows, page, snippets), `account` (plan, searches and
+extraction points left today) and seven for [clusters](#clusters). Every account can
+use it, a free one included - see [limits](https://publicwww.com/docs/mcp/limits/).
 
 ## Sign in
 
@@ -58,7 +59,7 @@ It asks for the token once and keeps it in the system keychain.
 ### Agent skill
 
 [`skills/publicwww-search`](skills/publicwww-search/SKILL.md) is a skill in the open
-Agent Skills format: how to write PublicWWW queries and use the two tools. Copy the
+Agent Skills format: how to write PublicWWW queries and use the tools. Copy the
 folder into your agent's skills directory (for example `.agents/skills/` or
 `~/.claude/skills/`).
 
@@ -75,6 +76,32 @@ folder into your agent's skills directory (for example `.agents/skills/` or
 
 More: [query syntax](https://publicwww.com/docs/query-syntax/).
 
+## Clusters
+
+A cluster is a saved list of websites the assistant can build, combine and extract
+data from.
+
+| Tool | What it does |
+|---|---|
+| `list_clusters` | the account's clusters, newest first |
+| `get_cluster` | a page of the domains in a cluster |
+| `create_cluster` | from a search (`query`, costs one search) or a list of `domains` |
+| `combine_clusters` | `and`, `or`, or `diff` (in the first, not in the second) of clusters |
+| `extract_from_cluster` | values from the page source of every site: ready-made `presets` or your own `regex`, part after part |
+| `rename_cluster` | a new name |
+| `delete_cluster` | deletes for good; marked destructive, so the assistant asks you first |
+
+Presets: `email`, `phone`, `whatsapp`, `telegram`, `skype`, `facebook`, `instagram`,
+`twitter`, `linkedin`, `gtm`, `ga4`, `ua`, `hotjar`, `adsense`, `bitcoin`. Anything else
+is a regular expression in slashes whose first group is the value, e.g.
+`/data-site-id="([0-9]+)"/i`. Extraction spends the day's extraction points; an
+account keeps up to 100 clusters.
+
+Ask in plain words: *"Find sites that load static.hotjar.com, save them as a cluster
+and get their contact emails and phones"* - the assistant runs `create_cluster`,
+then `extract_from_cluster` with the `email` and `phone` presets until the cluster
+is done. More: [tools](https://publicwww.com/docs/mcp/tools/).
+
 ## Calling it directly
 
 [`examples/mcp-curl.sh`](examples/mcp-curl.sh) lists the tools, reads the account and
@@ -82,7 +109,7 @@ runs a search with plain `curl`. Streamable HTTP, JSON answers, no sessions - se
 [for developers](https://publicwww.com/docs/mcp/developers/).
 
 For scripts the [REST API](https://publicwww.com/docs/api/) is the simpler road - the
-same search and token, with CSV and NDJSON. Small clients:
+same search, clusters and token, with CSV and NDJSON. Small clients:
 [Python](https://github.com/publicwww-com/publicwww-api-python),
 [JavaScript](https://github.com/publicwww-com/publicwww-api-javascript),
 [PHP](https://github.com/publicwww-com/publicwww-api-php),
