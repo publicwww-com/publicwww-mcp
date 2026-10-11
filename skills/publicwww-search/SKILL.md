@@ -57,8 +57,8 @@ from the sites themselves - emails, phones, social profiles, analytics or tag id
 or wants to compare two sets of sites.
 
 - `create_cluster` - from a search (`query`, same syntax as `search`; costs one
-  search, a repeat within a day is free) or from a list (`domains`, names or urls;
-  only sites in the index are kept). Optional `name`.
+  search) or from a list (`domains`, names or urls; only sites in the index are
+  kept). Optional `name`.
 - `list_clusters`, `get_cluster` (`cluster`, `page`, `rows`) - read only, spend
   nothing.
 - `combine_clusters` - `operation` `and` (in every cluster), `or` (in any) or
