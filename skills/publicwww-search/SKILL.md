@@ -10,7 +10,7 @@ is the fragment of markup, script or stylesheet you expect to find in the page
 source. Results are sites, ranked by popularity.
 
 The search runs through the PublicWWW MCP server (`https://api.publicwww.com/mcp`,
-tools `search`, `account` and seven cluster tools) or the REST API
+tools `search`, `account`, `read_docs` and seven cluster tools) or the REST API
 (`https://api.publicwww.com/v1/search`, `/v1/clusters`).
 
 ## Writing the query
@@ -43,6 +43,10 @@ Tips:
   match for each site; spends a snippet search on paid plans).
 - `account` - plan, searches used and left today, limits. Spends nothing; call it
   when the user asks about quota or a search is refused.
+- `read_docs` - PublicWWW's own documentation and price list in Markdown: without
+  `page` the table of contents, with `page` (or several in `pages`) the pages
+  themselves. Read it for any question about the query syntax, the API, limits or
+  plans instead of answering from memory. Spends nothing.
 - Each search counts against the account's daily searches. Ask for a small number
   of rows first and widen only if the user needs more.
 - `total` is the number of matching sites; `truncated` means the plan cut the list
@@ -53,7 +57,8 @@ Tips:
 ## Clusters and extraction
 
 A cluster is a saved list of websites. Use clusters when the user wants something
-from the sites themselves - emails, phones, social profiles, analytics or tag ids -
+from the sites themselves - emails, phones, messengers, social profiles, app store
+links, or any other value such as a tag id with your own expression -
 or wants to compare two sets of sites.
 
 - `create_cluster` - from a search (`query`, same syntax as `search`; costs one
@@ -65,8 +70,9 @@ or wants to compare two sets of sites.
   `diff` (in the first but not the second, exactly two), `clusters` - the ids.
 - `extract_from_cluster` - `cluster`, `presets` and/or `regex`, `offset`, `limit`,
   `include_empty`. Prefer presets by name: `email`, `phone`, `whatsapp`,
-  `telegram`, `skype`, `facebook`, `instagram`, `twitter`, `linkedin`, `gtm`,
-  `ga4`, `ua`, `hotjar`, `adsense`, `bitcoin`. Otherwise a PCRE in slashes whose
+  `telegram`, `viber`, `line`, `facebook`, `instagram`, `x`, `linkedin`, `youtube`,
+  `tiktok`, `pinterest`, `threads`, `bluesky`, `discord`, `github`, `google_play`,
+  `app_store`. Otherwise a PCRE in slashes whose
   first capture group is the value, e.g. `/data-site-id="([0-9]+)"/i`; up to ten
   expressions, one column each. It works in parts: call again with `offset` set to
   `next_offset` until it is null. Each site found costs as many extraction points
@@ -76,9 +82,9 @@ or wants to compare two sets of sites.
   before calling it, naming the cluster.
 - An account keeps up to 100 clusters; past that `create_cluster` and
   `combine_clusters` answer `cluster_limit` - offer to delete old ones, do not
-  delete on your own. Free accounts: up to 100 domains in a cluster and 100
-  extraction points a day. `extract_quota_exceeded` - the day's points are used
-  up.
+  delete on your own. `extract_quota_exceeded` - the day's points are used up.
+- The tools need a paid plan: a free account gets `plan_required` from every tool
+  but `read_docs`.
 
 Example: "emails of sites that use Hotjar" - `create_cluster` with query
 `"static.hotjar.com"`, then `extract_from_cluster` with presets `["email"]`,

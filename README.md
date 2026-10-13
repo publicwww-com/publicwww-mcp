@@ -9,9 +9,12 @@ ids out of their pages. [PublicWWW](https://publicwww.com) runs a remote MCP ser
 https://api.publicwww.com/mcp
 ```
 
-Nine tools: `search` (query, rows, page, snippets), `account` (plan, searches and
-extraction points left today) and seven for [clusters](#clusters). Every account can
-use it, a free one included - see [limits](https://publicwww.com/docs/mcp/limits/).
+Ten tools: `search` (query, rows, page, snippets), `account` (plan, searches and
+extraction points left today), `read_docs` (PublicWWW's own documentation and price
+list in Markdown) and seven for [clusters](#clusters). The same documentation pages
+are MCP resources, `publicwww://docs/<page>`. The tools need a paid plan; a free
+account can connect and read the documentation - see
+[limits](https://publicwww.com/docs/mcp/limits/).
 
 ## Sign in
 
@@ -91,8 +94,9 @@ data from.
 | `rename_cluster` | a new name |
 | `delete_cluster` | deletes for good; marked destructive, so the assistant asks you first |
 
-Presets: `email`, `phone`, `whatsapp`, `telegram`, `skype`, `facebook`, `instagram`,
-`twitter`, `linkedin`, `gtm`, `ga4`, `ua`, `hotjar`, `adsense`, `bitcoin`. Anything else
+Presets: `email`, `phone`, `whatsapp`, `telegram`, `viber`, `line`, `facebook`,
+`instagram`, `x`, `linkedin`, `youtube`, `tiktok`, `pinterest`, `threads`, `bluesky`,
+`discord`, `github`, `google_play`, `app_store`. Anything else
 is a regular expression in slashes whose first group is the value, e.g.
 `/data-site-id="([0-9]+)"/i`. Extraction spends the day's extraction points; an
 account keeps up to 100 clusters.
