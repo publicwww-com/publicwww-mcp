@@ -125,7 +125,8 @@ on `code`, not the message: every code is listed in `GET /`.
 - `401 missing_key`, `invalid_key`: no key, or one that does not exist.
 - `403 plan_required`: the account has no paid plan.
 - `400 page_too_deep`, `per_page_too_large`: past what the plan opens; the answer gives the limit.
-- `400 format_not_available`: csv, tsv and txt only fit rows.
+- `400 format_not_available`: the format does not fit this endpoint. Search takes csv, tsv and txt,
+  extract takes csv, a cluster's domains take txt.
 
 ## More
 
