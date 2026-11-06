@@ -38,6 +38,7 @@ are MCP resources, `publicwww://docs/<page>`. Without signing in, the tool list 
 | Codex CLI | `codex mcp add publicwww --url https://api.publicwww.com/mcp --bearer-token-env-var PUBLICWWW_TOKEN` |
 | opencode | [`clients/opencode.json`](clients/opencode.json) |
 | Goose | [`clients/goose.config.yaml`](clients/goose.config.yaml) |
+| Qwen Code | [`clients/qwen.settings.json`](clients/qwen.settings.json) |
 | DeepSeek Harness | `dsh plugin --profile <your profile> add github:publicwww-com/dsh-publicwww` - [plugin](https://github.com/publicwww-com/dsh-publicwww) |
 | Anything else | a config file from [`clients/`](clients/) |
 
