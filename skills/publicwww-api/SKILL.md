@@ -42,7 +42,7 @@ GET with the same parameters works too; POST suits long queries. Query syntax:
 | `(a \| b)` | either |
 | `-word` | must not appear |
 | `site:de`, `site:example.com` | a domain zone, or one site |
-| `depth:all` | inner pages too; by default home pages, one per site |
+| `depth:all` | inner pages too, and `total` then counts pages; by default home pages, one per site |
 | `like:"topic"`, `like:example.com` | orders by similarity and removes nothing |
 
 Only `a-z`, `0-9` and `_` are searched; any other character separates words. Several
@@ -53,13 +53,15 @@ filters let through: limit it with a phrase or `site:` and read the first rows, 
 https://publicwww.com/docs/query-syntax/
 
 Read the answer before reporting a count: `total_capped` means more than the number
-shown, `truncated` means the plan cut the page, `index_complete: false` means not every
+shown, so narrow the query rather than paging on; `truncated` means the plan cut the page, `index_complete: false` means not every
 part of the index answered and the numbers are a lower bound. `rank` is the place by
 popularity, 1 being the most popular, and `null` when unranked. `query_note` and
 `original_query` tell you when the query was read differently from what you sent.
 
 `snippets=1` adds fragments of source around the match and spends snippet quota as well.
-It is worth asking for on a small page to check that a query finds what you mean.
+It is worth asking for on a small page to check that a query finds what you mean, before
+spending anything on a cluster. A common word alone finds big sites first: look for a phrase
+that only the sites you want have in their code.
 
 ## Limits
 
@@ -95,7 +97,9 @@ curl -s -X POST https://api.publicwww.com/v1/clusters/$ID/extract \
 
 - `regex`: PCRE in slashes, the first capture group is the value. An expression without a
   group finds nothing. `presets`: ready-made ones, `GET /v1/clusters/presets` lists them.
-- `columns` names the columns; each row has `domain`, `values` in that order and `matches`.
+- The answer's `columns` names the columns, one per expression, and is not a parameter here;
+  each row has `domain`, `values` in that order and `matches`. A value is found only where the
+  source holds it, so expect sites with none.
 - Each value found costs one point, a site with nothing a tenth, a site not in the index
   nothing. So try a small `limit` first: an expression that catches too much pays for
   every value.
