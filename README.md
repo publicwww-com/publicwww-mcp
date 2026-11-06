@@ -9,11 +9,12 @@ ids out of their pages. [PublicWWW](https://publicwww.com) runs a remote MCP ser
 https://api.publicwww.com/mcp
 ```
 
-Ten tools: `search` (query, rows, page, snippets), `account` (plan, searches and
+Eleven tools: `search` (query, rows, page, snippets), `account` (plan, searches and
 extraction points left today), `read_docs` (PublicWWW's own documentation and price
-list in Markdown) and seven for [clusters](#clusters). The same documentation pages
-are MCP resources, `publicwww://docs/<page>`. The tools need a paid plan; a free
-account can connect and read the documentation - see
+list in Markdown) and eight for [clusters](#clusters). The same documentation pages
+are MCP resources, `publicwww://docs/<page>`. Without signing in, the tool list and
+`read_docs` work; the other tools need a paid plan, and a free account gets
+`plan_required` from them - see
 [limits](https://publicwww.com/docs/mcp/limits/).
 
 ## Sign in
@@ -35,6 +36,9 @@ account can connect and read the documentation - see
 | VS Code | [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%257B%2522name%2522%253A%2522publicwww%2522%252C%2522type%2522%253A%2522http%2522%252C%2522url%2522%253A%2522https%253A%252F%252Fapi.publicwww.com%252Fmcp%2522%252C%2522headers%2522%253A%257B%2522Authorization%2522%253A%2522Bearer%2520%2524%257Binput%253Apublicwww-token%257D%2522%257D%252C%2522inputs%2522%253A%255B%257B%2522type%2522%253A%2522promptString%2522%252C%2522id%2522%253A%2522publicwww-token%2522%252C%2522description%2522%253A%2522PublicWWW%2520token%2522%252C%2522password%2522%253Atrue%257D%255D%257D) |
 | Gemini CLI | `gemini extensions install https://github.com/publicwww-com/publicwww-mcp` |
 | Codex CLI | `codex mcp add publicwww --url https://api.publicwww.com/mcp --bearer-token-env-var PUBLICWWW_TOKEN` |
+| opencode | [`clients/opencode.json`](clients/opencode.json) |
+| Goose | [`clients/goose.config.yaml`](clients/goose.config.yaml) |
+| DeepSeek Harness | `dsh plugin --profile <your profile> add github:publicwww-com/dsh-publicwww` - [plugin](https://github.com/publicwww-com/dsh-publicwww) |
 | Anything else | a config file from [`clients/`](clients/) |
 
 The Cursor button reads the token from `PUBLICWWW_TOKEN`; VS Code asks for it once

@@ -10,7 +10,7 @@ is the fragment of markup, script or stylesheet you expect to find in the page
 source. Results are sites, ranked by popularity.
 
 The search runs through the PublicWWW MCP server (`https://api.publicwww.com/mcp`,
-tools `search`, `account`, `read_docs` and seven cluster tools) or the REST API
+tools `search`, `account`, `read_docs` and eight cluster tools) or the REST API
 (`https://api.publicwww.com/v1/search`, `/v1/clusters`).
 
 ## Writing the query
@@ -83,8 +83,9 @@ or wants to compare two sets of sites.
 - An account keeps up to 100 clusters; past that `create_cluster` and
   `combine_clusters` answer `cluster_limit` - offer to delete old ones, do not
   delete on your own. `extract_quota_exceeded` - the day's points are used up.
-- The tools need a paid plan: a free account gets `plan_required` from every tool
-  but `read_docs`.
+- Without signing in only `read_docs` works, and other tools answer 401: tell the
+  user to connect. They also need a paid plan: a free account gets `plan_required`
+  from every tool but `read_docs`.
 
 Example: "emails of sites that use Hotjar" - `create_cluster` with query
 `"static.hotjar.com"`, then `extract_from_cluster` with presets `["email"]`,

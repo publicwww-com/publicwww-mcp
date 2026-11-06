@@ -1,0 +1,11 @@
+# ~/.config/goose/config.yaml - the token comes from the PUBLICWWW_TOKEN environment variable.
+extensions:
+  publicwww:
+    enabled: true
+    type: streamable_http
+    name: publicwww
+    uri: https://api.publicwww.com/mcp
+    env_keys: [PUBLICWWW_TOKEN]
+    headers:
+      Authorization: Bearer ${PUBLICWWW_TOKEN}
+    timeout: 120

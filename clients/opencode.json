@@ -1,0 +1,11 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "publicwww": {
+      "type": "remote",
+      "url": "https://api.publicwww.com/mcp",
+      "oauth": false,
+      "headers": { "Authorization": "Bearer {env:PUBLICWWW_TOKEN}" }
+    }
+  }
+}
