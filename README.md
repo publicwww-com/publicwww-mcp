@@ -71,6 +71,9 @@ Agent Skills format: how to write PublicWWW queries and use the tools. Copy the
 folder into your agent's skills directory (for example `.agents/skills/` or
 `~/.claude/skills/`).
 
+[`skills/publicwww-api`](skills/publicwww-api/SKILL.md) does the same for the
+[REST API](https://publicwww.com/docs/api/), for agents that call it from code or the shell.
+
 ## Query syntax, briefly
 
 | Query | Finds |
