@@ -5,8 +5,8 @@ description: Call the PublicWWW REST API from code or the shell - search the sou
 
 # PublicWWW REST API
 
-PublicWWW indexes the source code of web pages, not the text visitors see. A query
-is the fragment of markup, script or stylesheet you expect to find.
+PublicWWW indexes the source code of web pages: markup, scripts, stylesheets and the
+text in them. A query is a fragment you expect to find there, or with `like:` a topic.
 
 Base URL: `https://api.publicwww.com`. The map of the API is `GET /` and
 `GET /openapi.json`, both without a key.
@@ -15,11 +15,11 @@ Base URL: `https://api.publicwww.com`. The map of the API is `GET /` and
 
 Send `Authorization: Bearer <key>` and nothing else: a key in the URL is refused.
 Keys are issued at https://publicwww.com/profile/api. Read the key from the
-environment, for example `PUBLICWWW_TOKEN`, and never print it or write it to a file
+environment, for example `PUBLICWWW_KEY`, and never print it or write it to a file
 you commit. Searches and clusters need a paid plan; `/v1/account` works on any account.
 
 ```sh
-curl -s -H "Authorization: Bearer $PUBLICWWW_TOKEN" https://api.publicwww.com/v1/account
+curl -s -H "Authorization: Bearer $PUBLICWWW_KEY" https://api.publicwww.com/v1/account
 ```
 
 The answer gives the plan, what is left today and `max_per_page`. It spends nothing
@@ -29,21 +29,20 @@ and does not count against the request rate, so call it first.
 
 ```sh
 curl -s -X POST https://api.publicwww.com/v1/search \
-  -H "Authorization: Bearer $PUBLICWWW_TOKEN" -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $PUBLICWWW_KEY" -H "Content-Type: application/json" \
   -d '{"query": "\"googletagmanager.com/gtm.js\" site:de", "per_page": 20}'
 ```
 
 GET with the same parameters works too; POST suits long queries. Query syntax:
 
-| Write | Means |
-|---|---|
-| `"exact phrase"` | those words in that order; punctuation inside only separates words |
-| `a b` | both must appear |
-| `(a \| b)` | either |
-| `-word` | must not appear |
-| `site:de`, `site:example.com` | a domain zone, or one site |
-| `depth:all` | inner pages too, and `total` then counts pages; by default home pages, one per site |
-| `like:"topic"`, `like:example.com` | orders by similarity and removes nothing |
+- `"exact phrase"`: those words in that order; punctuation inside only separates words
+- `a b`: both must appear
+- `(a | b)`: either
+- `-word`: must not appear
+- `site:de`, `site:example.com`: a domain zone, or one site
+- `depth:all`: inner pages too, and `total` then counts pages; by default home pages, one per site
+- `like:"topic"`, `like:example.com`: websites about a topic or like a given site; orders by
+  similarity and removes nothing
 
 Only `a-z`, `0-9` and `_` are searched; any other character separates words. Several
 phrases in one query must all match. Results come most popular first, or most similar
@@ -60,8 +59,11 @@ popularity, 1 being the most popular, and `null` when unranked. `query_note` and
 
 `snippets=1` adds fragments of source around the match and spends snippet quota as well.
 It is worth asking for on a small page to check that a query finds what you mean, before
-spending anything on a cluster. A common word alone finds big sites first: look for a phrase
-that only the sites you want have in their code.
+spending anything on a cluster. With `like:` alone the fragment is the page's `<title>`.
+
+A common word alone finds big sites that merely mention it. To find sites by what they run,
+look for a phrase only they have in their code. To find sites about a topic, use
+`like:"online course" site:de` and read the first rows.
 
 ## Limits
 
@@ -78,9 +80,12 @@ only the first N) or from a list of domains (free):
 
 ```sh
 curl -s -X POST https://api.publicwww.com/v1/clusters \
-  -H "Authorization: Bearer $PUBLICWWW_TOKEN" -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $PUBLICWWW_KEY" -H "Content-Type: application/json" \
   -d '{"query": "\"googletagmanager.com/gtm.js\" site:de", "limit": 100, "name": "GTM in .de"}'
 ```
+
+With `like:`, always pass `limit`: `{"query": "like:\"online course\" site:de", "limit": 100}`.
+Since `like:` removes nothing, the cluster would otherwise take the plan's maximum.
 
 The answer's `id` goes in the path. `/v1/clusters/combine` makes one from others (`and`,
 `or`, `diff`), `/v1/clusters/{id}/signatures` finds code the sites share, as ready searches
@@ -91,22 +96,26 @@ Extraction pulls values out of every indexed page of each site in a cluster:
 
 ```sh
 curl -s -X POST https://api.publicwww.com/v1/clusters/$ID/extract \
-  -H "Authorization: Bearer $PUBLICWWW_TOKEN" -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $PUBLICWWW_KEY" -H "Content-Type: application/json" \
   -d '{"regex": ["/(GTM-[A-Z0-9]+)/"], "limit": 10}'
 ```
 
 - `regex`: PCRE in slashes, the first capture group is the value. An expression without a
-  group finds nothing. `presets`: ready-made ones, `GET /v1/clusters/presets` lists them.
+  group finds nothing. A slash inside is written `\/`, or use pipes: `|https://example.com/([a-z]+)|i`.
+  `presets`: ready-made ones, `GET /v1/clusters/presets` lists them with their expressions.
 - The answer's `columns` names the columns, one per expression, and is not a parameter here;
   each row has `domain`, `values` in that order and `matches`. A value is found only where the
-  source holds it, so expect sites with none.
+  source holds it, so expect sites with none: they are left out unless you pass `skip_empty=0`.
+- `size` is the whole cluster, `scanned` the sites this call went through, `in_index` those in
+  the index, `with_matches` those that gave a value.
 - Each value found costs one point, a site with nothing a tenth, a site not in the index
   nothing. So try a small `limit` first: an expression that catches too much pays for
-  every value.
+  every value. Every call is paid for, a repeat of the same sites too: keep the answer, and
+  after a trial go on from `next_offset`.
 - `limit` counts sites, up to 1000 a call. Continue with `offset` set to `next_offset`
   until it is `null`. `stopped` says why a call ended early.
-- `format=csv` gives a file, comma separated; `header=1` adds a header line, `delimiter`
-  changes the separator.
+- `format=csv` gives a file, comma separated (search results as CSV use a semicolon);
+  `header=1` adds a header line, `delimiter` changes the separator.
 
 ## Errors
 
