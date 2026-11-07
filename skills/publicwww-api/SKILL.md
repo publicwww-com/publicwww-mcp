@@ -39,7 +39,7 @@ GET with the same parameters works too; POST suits long queries. Query syntax:
 - `a b`: both must appear
 - `(a | b)`: either
 - `-word`: must not appear
-- `site:de`, `site:example.com`: a domain zone, or one site
+- `site:de`, `site:example.com`: a domain zone, or one site; `-site:com`, `-site:example.com`: leave them out
 - `depth:all`: inner pages too, and `total` then counts pages; by default home pages, one per site
 - `like:"topic"`, `like:example.com`: websites about a topic or like a given site; orders by
   similarity and removes nothing
@@ -99,8 +99,8 @@ curl -s -X POST https://api.publicwww.com/v1/clusters/$ID/extract \
   -d '{"regex": ["/(GTM-[A-Z0-9]+)/"], "limit": 10}'
 ```
 
-- `regex`: PCRE in slashes, the first capture group is the value. An expression without a
-  group finds nothing. A slash inside is written `\/`, or use pipes: `|https://example.com/([a-z]+)|i`.
+- `regex`: PCRE in slashes, the first capture group is the value, or the whole match
+  without a group. A slash inside is written `\/`, or use pipes: `|https://example.com/([a-z]+)|i`.
   `presets`: ready-made ones, `GET /v1/clusters/presets` lists them with their expressions.
 - The answer's `columns` names the columns, one per expression, and is not a parameter here;
   each row has `domain`, `values` in that order and `matches`. A value is found only where the

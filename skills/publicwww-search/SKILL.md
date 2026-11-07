@@ -24,7 +24,7 @@ tools `search`, `account`, `read_docs` and eight cluster tools) or the REST API
 | `( \| )` | Either side; brackets group | `jquery (slick \| swiper)` |
 | `-x` | Exclude pages containing x | `"amcharts.js" -bootstrap` |
 | `\"` | A quote inside a phrase | `"<html lang=\"fr\">"` |
-| `site:` | One top-level domain, or one site's pages | `site:de bootstrap`, `site:example.com` |
+| `site:` | One top-level domain, or one site's pages; with a minus, leaves them out | `site:de bootstrap`, `site:example.com`, `"jquery" -site:com` |
 | `depth:all` | Inner pages too (by default only home pages) | `depth:all "math.min.js"` |
 | `ip:` | One address or a class C subnet | `ip:160.153.136.* bootstrap` |
 
