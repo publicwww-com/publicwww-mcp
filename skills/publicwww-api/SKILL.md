@@ -1,6 +1,6 @@
 ---
 name: publicwww-api
-description: Call the PublicWWW REST API from code or the shell - search the source code (HTML, JavaScript, CSS) of hundreds of millions of websites, save the sites as clusters, extract values from their pages. Use when a task needs which sites use a script, tag, library or tracking id through HTTP rather than MCP.
+description: Call the PublicWWW REST API from code or the shell - search the source code (HTML, JavaScript, CSS) of web pages, save the sites as clusters, extract values from their pages. Use when a task needs which sites use a script, tag, library or tracking id through HTTP rather than MCP.
 ---
 
 # PublicWWW REST API
@@ -53,8 +53,7 @@ https://publicwww.com/docs/query-syntax/
 
 Read the answer before reporting a count: `total_capped` means more than the number
 shown, so narrow the query rather than paging on; `truncated` means the plan cut the page, `index_complete: false` means not every
-part of the index answered and the numbers are a lower bound. `rank` is the place by
-popularity, 1 being the most popular, and `null` when unranked. `query_note` and
+part of the index answered and the numbers are a lower bound. `rank` is the place by popularity, 1 being the most popular, an estimate with no guarantees, and `null` when unranked. `query_note` and
 `original_query` tell you when the query was read differently from what you sent.
 
 `snippets=1` adds fragments of source around the match and spends snippet quota as well.

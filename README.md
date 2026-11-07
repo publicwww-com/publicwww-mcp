@@ -1,6 +1,6 @@
 # PublicWWW MCP server
 
-Search the source code (HTML, JavaScript, CSS) of hundreds of millions of websites
+Search the source code (HTML, JavaScript, CSS) of web pages
 from an AI assistant: which sites load a script, use a library, carry a tracking id
 or a widget - then save them as a cluster and pull contacts, social profiles or tag
 ids out of their pages. [PublicWWW](https://publicwww.com) runs a remote MCP server:
@@ -9,7 +9,7 @@ ids out of their pages. [PublicWWW](https://publicwww.com) runs a remote MCP ser
 https://api.publicwww.com/mcp
 ```
 
-Eleven tools: `search` (query, rows, page, snippets), `account` (plan, searches and
+Tools: `search` (query, rows, page, snippets), `account` (plan, searches and
 extraction points left today), `read_docs` (PublicWWW's own documentation and price
 list in Markdown) and eight for [clusters](#clusters). The same documentation pages
 are MCP resources, `publicwww://docs/<page>`. Without signing in, the tool list and

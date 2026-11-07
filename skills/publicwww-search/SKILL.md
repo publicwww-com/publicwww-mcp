@@ -1,6 +1,6 @@
 ---
 name: publicwww-search
-description: Search the source code (HTML, JavaScript, CSS) of hundreds of millions of websites with PublicWWW - find which sites use a script, library, tracking id, widget, meta tag or any code fragment, save them as clusters and extract contacts, social profiles or tag ids from their pages. Use when the user asks which or how many websites contain some code, wants a list of such sites, or wants data pulled out of those sites.
+description: Search the source code (HTML, JavaScript, CSS) of web pages with PublicWWW - find which sites use a script, library, tracking id, widget, meta tag or any code fragment, save them as clusters and extract contacts, social profiles or tag ids from their pages. Use when the user asks which or how many websites contain some code, wants a list of such sites, or wants data pulled out of those sites.
 ---
 
 # Searching page source with PublicWWW
